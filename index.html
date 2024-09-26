@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Decision Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            margin: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reset {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+    <script>
+        function showFirstTimeOptions() {
+            document.getElementById("result").innerHTML = 
+                "Do you need support? " +
+                "<button onclick='showSupport()'>Yes</button> " +
+                "<button onclick='proceedToUpload()'>No</button>";
+        }
+
+        function showSupport() {
+            document.getElementById("result").innerHTML = 
+                "For support, contact XCB1 or Aisha XTG1 for help.";
+            showResetButton();
+        }
+
+        function proceedToUpload() {
+            document.getElementById("result").innerHTML = 
+                "What would you like to upload? " +
+                "<button onclick='uploadStep(1)'>Step 1</button> " +
+                "<button onclick='uploadStep(2)'>Steps 2-5</button>";
+        }
+
+        function uploadStep(step) {
+            if (step === 1) {
+                document.getElementById("result").innerHTML = 
+                    "You've selected Step 1. Proceed with uploading relevant documents.";
+                showResetButton();
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "Do you have opportunities in polygon, and has Assure shared the ID for the approved segment? " +
+                    "<button onclick='opportunityInPolygon(true)'>Yes</button> " +
+                    "<button onclick='opportunityInPolygon(false)'>No</button>";
+            }
+        }
+
+        function opportunityInPolygon(hasOpportunities) {
+            if (hasOpportunities) {
+                document.getElementById("result").innerHTML = 
+                    "Please follow the detailed SOP in the application to upload the data. " +
+                    "You can also <a href='template.xlsx' download='ExcelTemplate.xlsx'>download the Excel template</a> if needed.";
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "Please ensure the data is ready and the approved segment ID is shared before proceeding.";
+            }
+            showResetButton();
+        }
+
+        function startDecisionTree(firstTimeUser) {
+            if (firstTimeUser) {
+                showFirstTimeOptions();
+            } else {
+                proceedToUpload();
+            }
+            hideResetButton();
+        }
+
+        function resetTree() {
+            document.getElementById("result").innerHTML = "";
+            hideResetButton();
+        }
+
+        function showResetButton() {
+            document.getElementById("reset").style.display = "block";
+        }
+
+        function hideResetButton() {
+            document.getElementById("reset").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <h1>Are you a first-time user?</h1>
+    <button onclick="startDecisionTree(true)">Yes</button>
+    <button onclick="startDecisionTree(false)">No</button>
+    
+    <div id="result"></div>
+    <button id="reset" onclick="resetTree()">Start Over</button>
+
+</body>
+</html>
